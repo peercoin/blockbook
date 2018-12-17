@@ -20,6 +20,6 @@ WORKDIR /opt
 USER blockbook
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["blockbook", "-blockchaincfg=/tmp/blockchaincfg.json","-datadir=/data","-sync","-public=:8080","-logtostderr"]
+CMD ["blockbook", "-blockchaincfg=/home/blockbook/blockchaincfg.json","-datadir=/data","-sync","-public=:8080","-logtostderr"]
 
 EXPOSE 8080
