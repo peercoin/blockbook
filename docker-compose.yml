@@ -8,9 +8,10 @@ services:
        - 8080:8080
      volumes:
       - "blockbook_datadir:/data"
+     restart: always
 
   lpeercoind:
-    image: peercoin/peercoind:0.8.4
+    image: peercoin/peercoind:0.11.2
     environment:
       - RPC_USER=peercoinrpc
       - RPC_PASSWORD=Dodm2a7tUGEDcUzZfQacSFKmgfiJSwZNFs6hi6YFqBnC
@@ -21,6 +22,7 @@ services:
       - "9902"
     volumes:
       - "peercoin_datadir:/data"
+    restart: always
 
 volumes:
   peercoin_datadir:  

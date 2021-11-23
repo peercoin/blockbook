@@ -1,7 +1,17 @@
 version: '3'
 services:
-  tpeercoind:
-    image: peercoin/peercoind:0.8.4
+ tblockbook:
+     image: blockbook-peercoin_testnet
+     links:
+       - tpeercoind
+     ports:
+       - 18080:8080
+     volumes:
+      - "tblockbook_datadir:/data"
+     restart: always
+
+ tpeercoind:
+    image: peercoin/peercoind:0.11.2
     environment:
       - RPC_USER=peercoinrpc
       - RPC_PASSWORD=Dodm2a7tUGEDcUzZfQacSFKmgfiJSwZNFs6hi6YFqBnC
@@ -13,15 +23,7 @@ services:
       - "9904"
     volumes:
       - "tpeercoin_datadir:/data"
-
-  tblockbook:
-     image: blockbook-peercoin_testnet
-     links:
-       - tpeercoind
-     ports:
-       - 18080:8080
-     volumes:
-      - "tblockbook_datadir:/data"
+    restart: always
 
 volumes:
   tpeercoin_datadir:  
