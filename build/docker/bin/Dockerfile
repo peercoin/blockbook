@@ -49,7 +49,8 @@ RUN \
     trap cleanup EXIT && \
     mkdir -p $GOPATH/src/github.com/trezor && \
     cd $GOPATH/src/github.com/trezor && \
-    git clone https://github.com/trezor/blockbook.git && \
+    git clone https://github.com/peercoin/blockbook.git && \
+    git checkout peercoin-12 && \
     cd blockbook && \
     go mod download
 

@@ -40,6 +40,7 @@ import (
 	"github.com/trezor/blockbook/bchain/coins/namecoin"
 	"github.com/trezor/blockbook/bchain/coins/nuls"
 	"github.com/trezor/blockbook/bchain/coins/omotenashicoin"
+	"github.com/trezor/blockbook/bchain/coins/peercoin"
 	"github.com/trezor/blockbook/bchain/coins/pivx"
 	"github.com/trezor/blockbook/bchain/coins/polis"
 	"github.com/trezor/blockbook/bchain/coins/qtum"
@@ -100,6 +101,8 @@ func init() {
 	BlockChainFactories["Groestlcoin Testnet"] = grs.NewGroestlcoinRPC
 	BlockChainFactories["Groestlcoin Signet"] = grs.NewGroestlcoinRPC
 	BlockChainFactories["Groestlcoin Regtest"] = grs.NewGroestlcoinRPC
+	BlockChainFactories["Peercoin"] = peercoin.NewPeercoinRPC
+	BlockChainFactories["Peercoin Testnet"] = peercoin.NewPeercoinRPC
 	BlockChainFactories["PIVX"] = pivx.NewPivXRPC
 	BlockChainFactories["PIVX Testnet"] = pivx.NewPivXRPC
 	BlockChainFactories["Polis"] = polis.NewPolisRPC
