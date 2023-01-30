@@ -50,8 +50,8 @@ RUN \
     mkdir -p $GOPATH/src/github.com/trezor && \
     cd $GOPATH/src/github.com/trezor && \
     git clone https://github.com/peercoin/blockbook.git && \
-    git checkout peercoin-12 && \
     cd blockbook && \
+    git checkout peercoin-12 && \
     go mod download
 
 ADD Makefile /build/Makefile
