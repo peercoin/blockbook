@@ -1,11 +1,8 @@
 # initialize from the image defined by BASE_IMAGE
-ARG BASE_IMAGE
-FROM $BASE_IMAGE
-ARG DEBIAN_FRONTEND=noninteractive
-ARG PORTABLE_ROCKSDB
+FROM debian:10
 
 RUN apt-get update && \
-    apt-get install -y libsnappy1v5 libzmq3 gettext-base && \
+    apt-get install -y libsnappy1v5 libzmq5 gettext-base && \
     apt-get clean && \
     groupadd --gid 1001 --system blockbook && \
     useradd --uid 1000 --system -g blockbook --create-home blockbook && \

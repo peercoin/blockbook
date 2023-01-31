@@ -318,33 +318,34 @@ func (b *PeercoinRPC) GetTransaction(txid string) (*bchain.Tx, error) {
 }
 
 // getRawTransaction returns json as returned by backend, with all coin specific data
+
 func (b *PeercoinRPC) getRawTransaction(txid string) (json.RawMessage, error) {
-	if txid == "" {
-		return nil, bchain.ErrTxidMissing
-	}
+	glog.V(1).Info("rpc: getrawtransaction ", txid)
 
-	verbose := 1
-	getTxRequest := GenericCmd{
-		ID:     1,
-		Method: "getrawtransaction",
-		Params: []interface{}{txid, &verbose},
-	}
+	res := btc.ResGetRawTransaction{}
+	req := cmdGetRawTransaction{Method: "getrawtransaction"}
+	req.Params.Txid = txid
+	req.Params.Verbose = 1
+	err := b.Call(&req, &res)
 
-	var getTxResult GetTransactionResult
-	if err := b.Call(getTxRequest, &getTxResult); err != nil {
-		return nil, err
-	}
-
-	if getTxResult.Error.Message != "" {
-		return nil, errors.Errorf("Error fetching transaction: %v", txid)
-	}
-
-	bytes, err := json.Marshal(getTxResult.Result)
 	if err != nil {
 		return nil, errors.Annotatef(err, "txid %v", txid)
 	}
+	if res.Error != nil {
+		if btc.IsMissingTx(res.Error) {
+			return nil, bchain.ErrTxNotFound
+		}
+		return nil, errors.Annotatef(res.Error, "txid %v", txid)
+	}
+	return res.Result, nil
+}
 
-	return json.RawMessage(bytes), nil
+type cmdGetRawTransaction struct {
+	Method string `json:"method"`
+	Params struct {
+		Txid    string `json:"txid"`
+		Verbose int    `json:"verbose"`
+	} `json:"params"`
 }
 
 // GetTransactionSpecific returns the json raw message for the tx identified by

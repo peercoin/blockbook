@@ -41,11 +41,12 @@ type BitcoinLikeParser struct {
 // NewBitcoinLikeParser returns new BitcoinLikeParser instance
 func NewBitcoinLikeParser(params *chaincfg.Params, c *Configuration) *BitcoinLikeParser {
 	var decimals int
-	if c.Slip44 == 6 {
-		decimals = 6
-	} else {
+	if c.Slip44 != 6 {
 		decimals = 8
+	} else {
+		decimals = 6
 	}
+
 	p := &BitcoinLikeParser{
 		BaseParser: &bchain.BaseParser{
 			BlockAddressesToKeep: c.BlockAddressesToKeep,
