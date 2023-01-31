@@ -35,13 +35,9 @@ func (JSONMarshalerV1) Marshal(v interface{}) ([]byte, error) {
 
 	switch v := v.(type) {
 	case *CmdGetBlock:
-		var t bool
-		if v.Params.Verbosity > 0 {
-			t = true
-		}
 		u.Method = v.Method
 		u.Params = append(u.Params, v.Params.BlockHash)
-		u.Params = append(u.Params, t)
+		u.Params = append(u.Params, v.Params.Verbosity)
 	case *CmdGetRawTransaction:
 		var n int
 		if v.Params.Verbose {
