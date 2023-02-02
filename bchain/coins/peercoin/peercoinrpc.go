@@ -212,29 +212,43 @@ func (b *PeercoinRPC) GetBlock(hash string, height uint32) (*bchain.Block, error
 	var err error
 	if hash == "" && height > 0 {
 		hash, err = b.GetBlockHash(height)
-
 		if err != nil {
 			return nil, err
 		}
 	}
-	block, err := b.GetBlockFull(hash)
+
+	glog.V(1).Info("rpc: getblock (verbosity=1) ", hash)
+
+	res := btc.ResGetBlockThin{}
+	req := btc.CmdGetBlock{Method: "getblock"}
+	req.Params.BlockHash = hash
+	req.Params.Verbosity = 1
+	err = b.Call(&req, &res)
+
 	if err != nil {
-		return nil, err
+		return nil, errors.Annotatef(err, "hash %v", hash)
+	}
+	if res.Error != nil {
+		return nil, errors.Annotatef(res.Error, "hash %v", hash)
 	}
 
-	for _, tx := range block.Txs {
-		for i := range tx.Vout {
-			vout := &tx.Vout[i]
-			// convert vout.JsonValue to big.Int and clear it, it is only temporary value used for unmarshal
-			vout.ValueSat, err = b.Parser.AmountToBigInt(vout.JsonValue)
-			if err != nil {
-				return nil, err
+	txs := make([]bchain.Tx, 0, len(res.Result.Txids))
+	for _, txid := range res.Result.Txids {
+		tx, err := b.GetTransaction(txid)
+		if err != nil {
+			if err == bchain.ErrTxNotFound {
+				glog.Errorf("rpc: getblock: skipping transaction in block %s due error: %s", hash, err)
+				continue
 			}
-			vout.JsonValue = ""
+			return nil, err
 		}
+		txs = append(txs, *tx)
 	}
-
-	return block, err
+	block := &bchain.Block{
+		BlockHeader: res.Result.BlockHeader,
+		Txs:         txs,
+	}
+	return block, nil
 }
 
 func isErrBlockNotFound(err *bchain.RPCError) bool {

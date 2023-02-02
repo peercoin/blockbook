@@ -2,7 +2,7 @@
 FROM debian:10
 
 RUN apt-get update && \
-    apt-get install -y libsnappy1v5 libzmq5 gettext-base && \
+    apt-get install -y libsnappy1v5 libzmq5 gettext-base ca-certificates && \
     apt-get clean && \
     groupadd --gid 1001 --system blockbook && \
     useradd --uid 1000 --system -g blockbook --create-home blockbook && \

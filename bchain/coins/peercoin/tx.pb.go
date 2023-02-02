@@ -21,10 +21,6 @@ const (
 )
 
 type ProtoTransaction struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
 	Txid      []byte                       `protobuf:"bytes,1,opt,name=Txid,proto3" json:"Txid,omitempty"`
 	Hex       []byte                       `protobuf:"bytes,2,opt,name=Hex,proto3" json:"Hex,omitempty"`
 	Blocktime uint64                       `protobuf:"varint,3,opt,name=Blocktime,proto3" json:"Blocktime,omitempty"`
@@ -38,11 +34,6 @@ type ProtoTransaction struct {
 
 func (x *ProtoTransaction) Reset() {
 	*x = ProtoTransaction{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_tx_proto_msgTypes[0]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
 }
 
 func (x *ProtoTransaction) String() string {
@@ -53,13 +44,6 @@ func (*ProtoTransaction) ProtoMessage() {}
 
 func (x *ProtoTransaction) ProtoReflect() protoreflect.Message {
 	mi := &file_tx_proto_msgTypes[0]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
 	return mi.MessageOf(x)
 }
 
@@ -132,10 +116,6 @@ func (x *ProtoTransaction) GetTime() uint64 {
 }
 
 type ProtoTransaction_VinType struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
 	Coinbase     string   `protobuf:"bytes,1,opt,name=Coinbase,proto3" json:"Coinbase,omitempty"`
 	Txid         []byte   `protobuf:"bytes,2,opt,name=Txid,proto3" json:"Txid,omitempty"`
 	Vout         uint32   `protobuf:"varint,3,opt,name=Vout,proto3" json:"Vout,omitempty"`
@@ -146,11 +126,6 @@ type ProtoTransaction_VinType struct {
 
 func (x *ProtoTransaction_VinType) Reset() {
 	*x = ProtoTransaction_VinType{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_tx_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
 }
 
 func (x *ProtoTransaction_VinType) String() string {
@@ -161,13 +136,6 @@ func (*ProtoTransaction_VinType) ProtoMessage() {}
 
 func (x *ProtoTransaction_VinType) ProtoReflect() protoreflect.Message {
 	mi := &file_tx_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
 	return mi.MessageOf(x)
 }
 
@@ -219,10 +187,6 @@ func (x *ProtoTransaction_VinType) GetAddresses() []string {
 }
 
 type ProtoTransaction_VoutType struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
 	ValueSat        []byte   `protobuf:"bytes,1,opt,name=ValueSat,proto3" json:"ValueSat,omitempty"`
 	N               uint32   `protobuf:"varint,2,opt,name=N,proto3" json:"N,omitempty"`
 	ScriptPubKeyHex []byte   `protobuf:"bytes,3,opt,name=ScriptPubKeyHex,proto3" json:"ScriptPubKeyHex,omitempty"`
@@ -231,11 +195,6 @@ type ProtoTransaction_VoutType struct {
 
 func (x *ProtoTransaction_VoutType) Reset() {
 	*x = ProtoTransaction_VoutType{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_tx_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
 }
 
 func (x *ProtoTransaction_VoutType) String() string {
@@ -246,13 +205,6 @@ func (*ProtoTransaction_VoutType) ProtoMessage() {}
 
 func (x *ProtoTransaction_VoutType) ProtoReflect() protoreflect.Message {
 	mi := &file_tx_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
 	return mi.MessageOf(x)
 }
 
@@ -369,40 +321,13 @@ func file_tx_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_tx_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProtoTransaction); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
+			return nil
 		}
 		file_tx_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProtoTransaction_VinType); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
+			return nil
 		}
 		file_tx_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProtoTransaction_VoutType); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
+			return nil
 		}
 	}
 	type x struct{}

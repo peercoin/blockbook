@@ -23,9 +23,9 @@
     "package_revision": "1",
     "system_user": "peercoin",
     "version": "0.12",
-    "binary_url": "https://github.com/peercoin/peercoin/releases/download/latest/peercoin-101195b3aaa1-x86_64-linux-gnu.tar.gz",
+    "binary_url": "https://github.com/peercoin/peercoin/releases/download/v0.12.0ppc/peercoin-0.12.0ppc-aarch64-linux-gnu.tar.gz",
     "verification_type": "sha256",
-    "verification_source": "9e5f8f0021f527fc11abb48f597409f7519675e9c2a5d80482dd5f3ffffefdd7",
+    "verification_source": "43c41737ff8d510471a5b7d718f25c284a91c9c3b12abc74ac81e9459bcad6b8",
     "extract_command": "tar -C backend --strip 1 -xf",
     "exclude_files": [
       "bin/peercoin-qt"

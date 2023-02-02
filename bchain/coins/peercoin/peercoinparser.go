@@ -2,7 +2,9 @@ package peercoin
 
 import (
 	"encoding/hex"
+	"encoding/json"
 	"github.com/gogo/protobuf/proto"
+	"github.com/golang/glog"
 	"github.com/juju/errors"
 	"github.com/martinboehm/btcd/wire"
 	"github.com/martinboehm/btcutil/chaincfg"
@@ -35,11 +37,11 @@ func init() {
 }
 
 type PeercoinParser struct {
-	*btc.BitcoinParser
+	*btc.BitcoinLikeParser
 }
 
 func NewPeercoinParser(params *chaincfg.Params, c *btc.Configuration) *PeercoinParser {
-	return &PeercoinParser{BitcoinParser: btc.NewBitcoinParser(params, c)}
+	return &PeercoinParser{BitcoinLikeParser: btc.NewBitcoinLikeParser(params, c)}
 }
 
 func GetChainParams(chain string) *chaincfg.Params {
@@ -60,9 +62,31 @@ func GetChainParams(chain string) *chaincfg.Params {
 	}
 }
 
+// ParseTxFromJson parses JSON message containing transaction and returns Tx struct
+func (p *PeercoinParser) ParseTxFromJson(msg json.RawMessage) (*bchain.Tx, error) {
+	var tx bchain.Tx
+	err := json.Unmarshal(msg, &tx)
+	if err != nil {
+		// log warning with Txid possibly parsed using fallbackTx
+		glog.Warningf("ParseTxFromJson unmarshal error", err)
+	}
+	for i := range tx.Vout {
+		vout := &tx.Vout[i]
+		// convert vout.JsonValue to big.Int and clear it, it is only temporary value used for unmarshal
+		vout.ValueSat, err = p.AmountToBigInt(vout.JsonValue)
+		if err != nil {
+			return nil, err
+		}
+		vout.JsonValue = ""
+	}
+
+	return &tx, nil
+}
+
 // PackTx packs transaction to byte array using protobuf
 func (p *PeercoinParser) PackTx(tx *bchain.Tx, height uint32, blockTime int64) ([]byte, error) {
 	var err error
+
 	pti := make([]*ProtoTransaction_VinType, len(tx.Vin))
 	for i, vi := range tx.Vin {
 		hex, err := hex.DecodeString(vi.ScriptSig.Hex)
